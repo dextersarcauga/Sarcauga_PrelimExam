@@ -1,43 +1,15 @@
 ---
-- name: Install
-  host: all
-  become: yes
-  task:
-    
-    - name: update repository index
-      apt: 
-        update_cache: yes
+ - hosts: all
+   become: true
+   tasks:
+   - name: apt install python3-pip package
+     apt:
+       name: 
+           - python3-pip
 
-    - name: install python3-pip3 package
-       apt:
-         name:python3
-       state: present
+   - name: use pip3 as default pip
+     command: update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
-    - name: install python3-pip3 package
-       apt:
-         name:pip3
-       state: present
-
-
-    - name: use pip3 as default pip
-      pip:
-        executable: pip3
-
-    - name: install Java
-       apt:
-         name: opejdk-11-jdk
-       state: present
-
-
-    - name: motd
-      copy:
-        content: "{{motd_text | deault('Ansible Manage node by Sarcauga')}}"
-        dest: /etc/motd
-
-    - name: user
-       user:
-         name:"{{'Sarcauga'}}"
-       state: present
-
-
+   - name: use python3 as default python
+     command: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
